@@ -49,6 +49,11 @@ plot(new_euler_truth_time, rcbb(:,1), 'r-',...
 ylabel('m')
 legend('x_{ArUco}','y_{ArUco}','z_{ArUco}','x','y','z')
 
+csvwrite('rcbc.csv',rcbc)
+csvwrite('rcbb.csv',rcbb)
+csvwrite('estimateangles.csv',new_estimate_rpy)
+csvwrite('eulerangles.csv',new_euler_truth_rpy)
+csvwrite('time.csv',new_estimate_time)
 
 function rxy = rotationmat(phi,theta,psi)
 % This function inputs phi, theta, and psi (roll, pitch, and yaw), creating

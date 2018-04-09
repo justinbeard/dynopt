@@ -2,23 +2,51 @@
 from gekko import GEKKO
 import numpy as np
 
-t_aruco, x_aurco, y_aurco, z_aruco, phi_aurco, theta_aurco, psi_aurco = np.loadtxt('ArucoMeasurements.csv', \
-                                                                          skiprows = 1, delimiter=',', unpack='true')
+time = np.loadtxt('time.csv', delimiter=',')
 
-t_euler, x_euler, y_euler, z_euler, phi_euler, theta_euler, psi_euler = np.loadtxt('EulerMeasurements.csv', \
-                                                                          skiprows = 1, delimiter=',', unpack='true')
+x_aruco, y_aruco, z_aruco = np.loadtxt('rcbc.csv', delimiter=',', unpack='true')
+phi_aruco, theta_aruco, psi_aruco = np.loadtxt('estimateangles.csv', delimiter=',', unpack='true')
+
+
+x_euler, y_euler, z_euler = np.loadtxt('rcbb.csv', delimiter=',', unpack='true')
+
+phi_euler, theta_euler, psi_euler = np.loadtxt('eulerangles.csv', delimiter=',', unpack='true')
 
 #%% Model
 
 #Initialize model
 m = GEKKO()
 
-x_euler = m.Const(value = x_euler)
+m.time = time
 
-m.Equation(0 == x_euler - x_aruco + x_offset)
+x_euler_model = m.CV(value = x_euler)
+y_euler_model = m.CV(value = y_euler)
+z_euler_model = m.CV(value = z_euler)
+phi_euler_model = m.CV(value = phi_euler)
+theta_euler_model = m.CV(value = theta_euler)
+psi_euler_model = m.CV(value = psi_euler)
+
+x_aruco_model = m.CV(value = x_aruco)
+y_aruco_model = m.CV(value = y_aruco)
+z_aruco_model = m.CV(value = z_aruco)
+phi_aruco_model = m.CV(value = phi_aruco)
+theta_aruco_model = m.CV(value = theta_aruco)
+psi_aruco_model = m.CV(value = psi_aruco)
+
+x_offset = m.MV(value = 0)
+y_offset = m.MV(value = 0)
+z_offset = m.MV(value = 0)
+phi_offset = m.MV(value = 0)
+theta_offset = m.MV(value = 0)
+psi_offset = m.MV(value = 0)
 
 
-
+m.Equation(0 == x_euler_model - x_aruco_model + x_offset)
+m.Equation(0 == y_euler_model - y_aruco_model + y_offset)
+m.Equation(0 == z_euler_model - z_aruco_model + z_offset)
+m.Equation(0 == phi_euler_model - phi_aruco_model + phi_offset)
+m.Equation(0 == theta_euler_model - theta_aruco_model + theta_offset)
+m.Equation(0 == psi_euler_model - psi_aruco_model + psi_offset)
 
 # Solve options
 rmt = True # Remote: True or False
