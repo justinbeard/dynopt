@@ -1,0 +1,17 @@
+Model
+  Parameters
+    u = 42
+
+    d = 0
+    Cv = 1
+    tau = 0.1
+  End Parameters
+
+  Variables
+    flow = 42
+  End Variables
+
+  Equations
+    tau * $flow = -flow + Cv * u + d
+  End Equations
+End Model
