@@ -53,32 +53,12 @@ rmt = True # Remote: True or False
 # For rmt=True, specify server
 m.server = 'http://byu.apmonitor.com'
 
-#time array 
-m.time = np.arange(50)
-
-#Parameters
-u = m.Param(value=42)
-d = m.FV(value=0)
-Cv = m.Param(value=1)
-tau = m.Param(value=0.1)
-
-#Variable
-flow = m.CV(value=42)
-
-#Equation 
-m.Equation(tau * flow.dt() == -flow + Cv * u + d)
-
 # Options
 m.options.imode = 5
 m.options.ev_type = 1 #start with l1 norm
 m.options.coldstart = 1
 m.options.solver = 1  # APOPT solver
 
-d.status = 1
-flow.fstatus = 1
-flow.wmeas = 100
-flow.wmodel = 0
-#flow.dcost = 0
 
 # Initialize L1 application
 m.solve(remote=rmt)

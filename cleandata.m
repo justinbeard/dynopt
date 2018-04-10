@@ -40,6 +40,9 @@ for j = 1:n
     rcbb(j,:) = rotmatx\rcbc(j,:).';
 end
 
+offset = rcbc - rcbb;
+
+figure(1)
 plot(new_euler_truth_time, rcbb(:,1), 'r-',...
      new_euler_truth_time, rcbb(:,2), 'g-',...
      new_euler_truth_time, rcbb(:,3), 'b-',...
@@ -49,11 +52,22 @@ plot(new_euler_truth_time, rcbb(:,1), 'r-',...
 ylabel('m')
 legend('x_{ArUco}','y_{ArUco}','z_{ArUco}','x','y','z')
 
+figure(2)
+plot(new_euler_truth_time, offset(:,1), 'r-')
+hold on
+plot(new_euler_truth_time, offset(:,2), 'g-')
+plot(new_euler_truth_time, offset(:,3), 'b-')
+ylabel('m')
+xlabel('time (s)')
+legend('x offset','y offset','z offset')
+
 csvwrite('rcbc.csv',rcbc)
 csvwrite('rcbb.csv',rcbb)
 csvwrite('estimateangles.csv',new_estimate_rpy)
 csvwrite('eulerangles.csv',new_euler_truth_rpy)
 csvwrite('time.csv',new_estimate_time)
+
+
 
 function rxy = rotationmat(phi,theta,psi)
 % This function inputs phi, theta, and psi (roll, pitch, and yaw), creating
