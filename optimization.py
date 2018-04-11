@@ -49,7 +49,7 @@ m.Equation(0 == theta_euler_model - theta_aruco_model + theta_offset)
 m.Equation(0 == psi_euler_model - psi_aruco_model + psi_offset)
 
 # Solve options
-rmt = True # Remote: True or False
+rmt = 1 # Remote: True or False
 # For rmt=True, specify server
 m.server = 'http://byu.apmonitor.com'
 
